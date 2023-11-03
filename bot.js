@@ -4,7 +4,6 @@ require('dotenv').config({
 });
 const fs = require("fs");
 const p = require("puppeteer-extra");
-const proxyChain = require("proxy-chain");
 const {
     randomListUser
 } = require('./utils/randomListUser')

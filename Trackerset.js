@@ -10,14 +10,16 @@ const {
 const path = require('path');
 const fs = require('fs');
 const { eventNames } = require('process');
+const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
+let updateCheckInProgress = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 660,
-    titleBarStyle: 'hidden', 
+    titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: '#fffff',
       symbolColor: '#3b71ca'
@@ -30,9 +32,23 @@ function createWindow() {
       contextIsolation: false,
     }
   });
-  app.isPackaged && Menu.setApplicationMenu(null)
   mainWindow.loadFile('./src/index.html');
-  // mainWindow.webContents.openDevTools();
+  app.isPackaged && Menu.setApplicationMenu(null)
+
+  autoUpdater.on('download-progress', (progress) => {
+    mainWindow.webContents.send('update_progress', progress.percent);
+  });
+
+  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.on('update-available', () => {
+    updateCheckInProgress = false;
+    mainWindow.webContents.send('update_available');
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    mainWindow.webContents.send('update_downloaded');
+  });
+
 }
 
 app.whenReady().then(createWindow);
@@ -57,7 +73,7 @@ ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners,
     event.sender.send('log', logs.join('\n'));
   };
 
-  
+
   try {
     logToTextarea('Process started...');
     event.sender.send('run')
@@ -82,4 +98,14 @@ ipcMain.on('stop', (event) => {
   };
 
   stopProccess(logToTextarea);
+});
+
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', {
+      version: app.getVersion()
+  });
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
 });
