@@ -71,11 +71,6 @@ stopButton.addEventListener('click', () => {
       ipcRenderer.send('stop');
   }
 });
-
-reload.addEventListener('click', () => {
-  ipcRenderer.send('reload')
-})
-
 ipcRenderer.on('log', (event, logs) => {
   const logTextarea = document.getElementById('log');
   logTextarea.value = logs;
