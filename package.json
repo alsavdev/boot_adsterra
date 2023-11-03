@@ -49,7 +49,7 @@
     "appId": "Alsav Asterra",
     "productName": "Alsav Asterra",
     "compression": "maximum",
-    "copyright": "2023 Alsav System",
+    "copyright": "Copyright 2023 Alsav System",
     "publish": {
       "provider": "github",
       "owner": "alsavdev",
