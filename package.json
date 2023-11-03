@@ -1,7 +1,7 @@
 {
   "name": "alsav-adsterra",
   "productName": "Alsav Asterra",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Alsav Asterra",
   "main": "Trackerset.js",
   "scripts": {
