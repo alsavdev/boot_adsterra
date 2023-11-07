@@ -1,7 +1,7 @@
 {
   "name": "alsav-adsterra",
   "productName": "Alsav Asterra",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "description": "Alsav Asterra",
   "main": "Trackerset.js",
   "scripts": {
@@ -66,7 +66,7 @@
     "nsis": {
       "oneClick": false,
       "perMachine": false,
-      "allowToChangeInstallationDirectory": true,
+      "allowToChangeInstallationDirectory": false,
       "createDesktopShortcut": true
     },
     "extraFiles": [

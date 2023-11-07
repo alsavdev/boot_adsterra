@@ -29,6 +29,7 @@ const { log } = require("console");
 const baseUrl = process.env.BASE_URL;
 const ipUrl = process.env.IP_URL;
 const timeout = process.env.TIMEOUT || 3000;
+const ipSaya = process.env.IP_SAYA;
 
 const spoof = path.join(process.cwd(), "extension/spoof/");
 
@@ -37,8 +38,19 @@ let page;
 let newProxyUrl;
 let stopFlag = false
 
-const startProccess = async (keyword, domain, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss) => {
-    stopFlag = false 
+const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys) => {
+stopFlag = false
+if (captchaApiKeys) {
+  p.use(
+      RecaptchaPlugin({
+          provider: {
+              id: '2captcha',
+              token: captchaApiKeys
+          },
+          visualFeedback: true
+      })
+  )
+} 
 let reachedproxy;
 let rproxy;    
 if (proxyC) {
@@ -106,6 +118,10 @@ if (proxyC) {
         })
 
         await checkErrorPage(logToTextarea)
+
+        if (ipsayas) {
+          await getipsaya(logToTextarea, proxyC)
+      }
 
         if (whoers) {
             await getIp(logToTextarea, proxyC)
@@ -183,6 +199,202 @@ if (proxyC) {
                   });
                   await page.sleep(3000);
               }
+          }
+        }
+        if (googlebanners) {
+          await page.goto(baseUrl, {
+            waitUntil: 'networkidle2',
+            timeout: 60000
+        })
+
+        await checkErrorPage(logToTextarea)
+        if (captchaApiKeys) {
+            await page.solveRecaptchas()
+        }
+        await page.sleep(5000)
+
+        const accept = await page.$('#L2AGLb');
+
+        if (accept) {
+            logToTextarea("Accept Found ✅");
+            const bahasa = await page.$('#vc3jof');
+            await bahasa.click();
+            await page.waitForSelector('li[aria-label="‪English‬"]');
+            await page.click('li[aria-label="‪English‬"]');
+            await page.sleep(5000)
+            const accept = await page.$('#L2AGLb');
+            await accept.click()
+        } else {
+            logToTextarea("Accept Not Found ❌");
+        }
+
+        const search = await page.$('[name="q"]')
+        await search.type(keyword, {
+            delay: 60
+        })
+        await search.press('Enter');
+        // const elements = await page.$$('input[name="btnK"]');
+        // if (elements.length > 1) {
+        //     const submit = elements[1];
+        //     await submit.click();
+        // }
+
+        await page.sleep(5000)
+        if (captchaApiKeys) {
+            await page.solveRecaptchas()
+          }
+
+          await page.sleep(5000)
+
+          logToTextarea('Find Article For ' + keyword);
+
+          const startTime = Date.now();
+          while (Date.now() - startTime < 10000) {
+              await page.evaluate(() => {
+                  window.scrollBy(0, 100);
+              });
+              await page.sleep(5000);
+              await page.evaluate(() => {
+                  window.scrollBy(0, -10);
+              });
+              await page.sleep(3000);
+          }
+
+          const hrefElements = await page.$$('[href]');
+          const hrefs = await Promise.all(hrefElements.map(element => element.evaluate(node => node.getAttribute('href'))));
+
+          let linkFound = false;
+
+          for (const href of hrefs) {
+              if (domain.includes(href)) {
+                  logToTextarea("Article Found ✅");
+                  try {
+                      const element = await page.waitForXPath(`//a[@href="${href}"]`, {
+                          timeout: 10000
+                      });
+                      await element.click();
+                      linkFound = true;
+                      break;
+                  } catch (error) {
+                      logToTextarea(`Error clicking the link: ${error}`);
+                      break;
+                  }
+              }
+          }
+
+          if (!linkFound) {
+              logToTextarea("Article Not Found ❌: " + domain);
+              await closeClear(proxyC)
+              return
+          }
+
+          await page.sleep(10000);
+
+          await page.reload();
+          const startTimes = Date.now();
+          const minsc = scrollmins * 60;
+          const maxsc = scrollmaxs * 60;
+          const timess = Math.floor(Math.random() * (maxsc - minsc + 1)) + 60;
+          const ttltimes = timess / 60;
+          const numb = ttltimes.toString().slice(0,4)
+          const rNumb = parseFloat(numb);
+          logToTextarea("Scrolling page article for random range " + rNumb + " minute 🕐");
+          while (Date.now() - startTimes < timess * 1000) {
+              await page.evaluate(() => {
+                  window.scrollBy(0, 100);
+              });
+              await page.sleep(3000);
+              await page.evaluate(() => {
+                  window.scrollBy(0, -10);
+              });
+              await page.sleep(3000);
+
+          }
+          if (recentPosts) {
+            logToTextarea("Klik Recent Posts");
+            const postLinks = await page.$$('#recent-posts-2 ul li a');
+            const randomIndex = Math.floor(Math.random() * postLinks.length);
+            const randomLink = postLinks[randomIndex];
+            
+            // page.sleep(20000)
+            // await randomLink.hover();
+            // page.sleep(20000)
+            // randomLink.click(),
+            page.sleep(10000)
+            const linkUrl = await page.evaluate(link => link.href, randomLink);
+            logToTextarea('Url Recent Posts : ' + linkUrl)
+            await page.goto(linkUrl);
+              logToTextarea("Klik Recent Posts Found ✅");
+              
+              // await page.reload();
+              const starttTimes = Date.now();
+              const miscs = scrollmins * 60;
+              const maxscs = scrollmaxs * 60;
+              const ttimes = Math.floor(Math.random() * (maxscs - miscs + 1)) + 60;
+              const cossfe = ttimes / 60;
+              const numb = cossfe.toString().slice(0,4)
+              const rNumb = parseFloat(numb);
+              logToTextarea("Scrolling page recent posts article for random range " + rNumb + " minute 🕐");
+                  while (Date.now() - starttTimes < ttimes * 1000) {
+                      await page.evaluate(() => {
+                          window.scrollBy(0, 100);
+                  });
+                  await page.sleep(3000);
+                  await page.evaluate(() => {
+                      window.scrollBy(0, -10);
+                  });
+                  await page.sleep(3000);
+              }
+          }
+          // Ambil daftar iframe
+          const iframes = await page.$$('iframe');
+
+          // Filter iframe yang tidak memiliki atribut style yang sesuai
+          const validIframes = await Promise.all(
+              iframes.map(async (iframe) => {
+              const style = await iframe.evaluate((el) => el.getAttribute('style'));
+              if (!style || !style.includes('width:1px;height:1px;display:none;')) {
+                  return iframe;
+              }
+              })
+          );
+
+          // Jika ada iframe yang sesuai, pilih secara acak satu dari mereka
+          if (validIframes.length > 0) {
+              const randomIndex = Math.floor(Math.random() * validIframes.length);
+              const randomIframe = validIframes[randomIndex];
+              await randomIframe.click();
+              logToTextarea("Klik Banner Found ✅");
+              
+
+              const startTimes = Date.now();
+              const minsc = scrollminAdss * 60;
+              const maxsc = scrollmaxAdss * 60;
+              const timess = Math.floor(Math.random() * (maxsc - minsc + 1)) + 60;
+              const ttltimes = timess / 60;
+              const numb = ttltimes.toString().slice(0,4)
+              const rNumb = parseFloat(numb);
+              logToTextarea("Scrolling page Banner article for random range " + rNumb + " minute 🕐");
+              const pages = await browser.pages(); 
+              
+              const lastPage = pages[pages.length - 1];
+              logToTextarea(lastPage)
+              await autoScrollbawa(lastPage);
+              await autoScrollToTop(lastPage);
+              await page.sleep(5000);
+              while (Date.now() - startTimes < timess * 1000) {
+                  await lastPage.evaluate(() => {
+                      window.scrollBy(0, 100);
+                  });
+                  await lastPage.waitForTimeout(5000);  // Tunggu selama 5 detik
+                  await lastPage.evaluate(() => {
+                      window.scrollBy(0, -10);
+                  });
+                  await lastPage.waitForTimeout(5000);  // Tunggu selama 5 detik
+              }
+
+          } else {
+              logToTextarea("Tidak ada benner yang sesuai ditemukan.");
           }
         }
        
@@ -378,79 +590,215 @@ if (proxyC) {
                 await linkElement[0].click();
                 logToTextarea('Tautan ditemukan dan diklik ✅');
                 await page.sleep(30000);
-                const starttTimes = Date.now();
-                const miscs = adsmins * 60;
-                const maxscs = adsmaxs * 60;
-                const ttimes = Math.floor(Math.random() * (maxscs - miscs + 1)) + 60;
-                const cossfe = ttimes / 60;
-                const numb = cossfe.toString().slice(0,4)
-                const rNumb = parseFloat(numb);
-                logToTextarea("Scrolling page tautan for random range " + rNumb + " minute 🕐");
-                    while (Date.now() - starttTimes < ttimes * 1000) {
-                        await page.evaluate(() => {
-                            window.scrollBy(0, 100);
-                    });
-                    await page.sleep(3000);
-                    await page.evaluate(() => {
-                        window.scrollBy(0, -10);
-                    });
-                     await page.sleep(3000);
+                const proxyDetected = await page.evaluate(() => {
+                  const proxyText = document.querySelector('body > a');
+                  return proxyText && proxyText.innerText === 'Anonymous Proxy detected, click here.';
+                });
+              
+                if (proxyDetected) {
+                  logToTextarea("Site Ads : Anonymous Proxy detected, click here. ❌");
+                  // await browser.close();
+                  await closeClear(proxyC)
+                }else{
+                  logToTextarea("Site Ads : ✅");
+                  // await page.reload();
+                  await page.sleep(30000);
+                  const starttTimes = Date.now();
+                  const miscs = scrollminAdss * 60;
+                  const maxscs = scrollmaxAdss * 60;
+                  const ttimes = Math.floor(Math.random() * (maxscs - miscs + 1)) + 60;
+                  const cossfe = ttimes / 60;
+                  const numb = cossfe.toString().slice(0,4)
+                  const rNumb = parseFloat(numb);
+                  logToTextarea("Scrolling page tautan for random range " + rNumb + " minute 🕐");
+                      while (Date.now() - starttTimes < ttimes * 1000) {
+                          await page.evaluate(() => {
+                              window.scrollBy(0, 100);
+                      });
+                      await page.sleep(3000);
+                      await page.evaluate(() => {
+                          window.scrollBy(0, -10);
+                      });
+                      await page.sleep(3000);
                 }
+              }
             } else {
                 logToTextarea('Tautan tidak ditemukan.');
             }           
         }
 
         if (linkAccounts) {
-            try {
-                await page.goto(keyword, { timeout: 10000 });
-              } catch (error) {
-                if (error.name === "TimeoutError") {
-                  // Handle timeout error
-                //   logToTextarea("TimeoutError: Reloading the page...");
-                  await page.reload();
-                } else {
-                  // Handle other errors
-                  logToTextarea("An error occurred:", error);
-                }
-              }
-            logToTextarea("Go to " + keyword);
-            await page.sleep(30000);
-            const proxyDetected = await page.evaluate(() => {
-                const proxyText = document.querySelector('body > a');
-                return proxyText && proxyText.innerText === 'Anonymous Proxy detected, click here.';
-              });
-            
-              if (proxyDetected) {
-                logToTextarea("Site Ads : Anonymous Proxy detected, click here. ❌");
-                // await browser.close();
-                await closeClear(proxyC)
-              }else{
-                logToTextarea("Site Ads : ✅");
-                // await page.reload();
-                const startTimes = Date.now();
-                const minsc = scrollminAdss * 60;
-                const maxsc = scrollmaxAdss * 60;
-                const timess = Math.floor(Math.random() * (maxsc - minsc + 1)) + 60;
-                const ttltimes = timess / 60;
-                const numb = ttltimes.toString().slice(0,4)
-                const rNumb = parseFloat(numb);
-                logToTextarea("Scrolling page directs for random range " + rNumb + " minute 🕐");
-                while (Date.now() - startTimes < timess * 1000) {
-                    await page.evaluate(() => {
-                        window.scrollBy(0, 100);
-                    });
-                    await page.sleep(3000);
-                    await page.evaluate(() => {
-                        window.scrollBy(0, -10);
-                    });
-                    await page.sleep(3000);
-                }
-              }
-            
-    
+          await page.goto(baseUrl, {
+            waitUntil: 'networkidle2',
+            timeout: 60000
+          })
 
+          await checkErrorPage(logToTextarea)
+          if (captchaApiKeys) {
+              await page.solveRecaptchas()
+          }
+          await page.sleep(5000)
+
+          const accept = await page.$('#L2AGLb');
+
+          if (accept) {
+              logToTextarea("Accept Found ✅");
+              const bahasa = await page.$('#vc3jof');
+              await bahasa.click();
+              await page.waitForSelector('li[aria-label="‪English‬"]');
+              await page.click('li[aria-label="‪English‬"]');
+              await page.sleep(5000)
+              const accept = await page.$('#L2AGLb');
+              await accept.click()
+          } else {
+              logToTextarea("Accept Not Found ❌");
+          }
+
+          const search = await page.$('[name="q"]')
+          await search.type(keyword, {
+              delay: 60
+          })
+          await search.press('Enter');
+          // const elements = await page.$$('input[name="btnK"]');
+          // if (elements.length > 1) {
+          //     const submit = elements[1];
+          //     await submit.click();
+          // }
+
+          await page.sleep(5000)
+          if (captchaApiKeys) {
+              await page.solveRecaptchas()
+          }
+
+          await page.sleep(5000)
+
+          logToTextarea('Find Article For ' + keyword);
+
+          const startTime = Date.now();
+          while (Date.now() - startTime < 10000) {
+              await page.evaluate(() => {
+                  window.scrollBy(0, 100);
+              });
+              await page.sleep(5000);
+              await page.evaluate(() => {
+                  window.scrollBy(0, -10);
+              });
+              await page.sleep(3000);
+          }
+
+          const hrefElements = await page.$$('[href]');
+          const hrefs = await Promise.all(hrefElements.map(element => element.evaluate(node => node.getAttribute('href'))));
+
+          let linkFound = false;
+
+          for (const href of hrefs) {
+              if (domain.includes(href)) {
+                  logToTextarea("Article Found ✅");
+                  try {
+                      const element = await page.waitForXPath(`//a[@href="${href}"]`, {
+                          timeout: 10000
+                      });
+                      await element.click();
+                      linkFound = true;
+                      break;
+                  } catch (error) {
+                      logToTextarea(`Error clicking the link: ${error}`);
+                      break;
+                  }
+              }
+          }
+
+          if (!linkFound) {
+              logToTextarea("Article Not Found ❌: " + domain);
+              await closeClear(proxyC)
+              return
+          }
+
+          await page.sleep(10000);
+
+          await page.reload();
+          const startTimes = Date.now();
+          const minsc = scrollmins * 60;
+          const maxsc = scrollmaxs * 60;
+          const timess = Math.floor(Math.random() * (maxsc - minsc + 1)) + 60;
+          const ttltimes = timess / 60;
+          const numb = ttltimes.toString().slice(0,4)
+          const rNumb = parseFloat(numb);
+          logToTextarea("Scrolling page article for random range " + rNumb + " minute 🕐");
+          while (Date.now() - startTimes < timess * 1000) {
+              await page.evaluate(() => {
+                  window.scrollBy(0, 100);
+              });
+              await page.sleep(3000);
+              await page.evaluate(() => {
+                  window.scrollBy(0, -10);
+              });
+              await page.sleep(3000);
+
+          }   
+          const linkElement = await page.$x(`//a[contains(@href, "${anchor}")]`);
+
+            if (linkElement.length > 0) {
+                // Klik tautan jika ditemukan
+                await linkElement[0].click();
+                logToTextarea(anchor + ' ditemukan dan diklik ✅');
+                await page.sleep(30000);
+                const proxyDetected = await page.evaluate(() => {
+                  const proxyText = document.querySelector('body > a');
+                  return proxyText && proxyText.innerText === 'Anonymous Proxy detected, click here.';
+                });
+              
+                if (proxyDetected) {
+                  logToTextarea("Site Ads : Anonymous Proxy detected, click here. ❌");
+                  // await browser.close();
+                  await closeClear(proxyC)
+                }else{
+                  logToTextarea("Site Ads : ✅");
+                  // await page.reload();
+                  await page.sleep(10000);
+                  const starttTimes = Date.now();
+                  const miscs = scrollminAdss * 60;
+                  const maxscs = scrollmaxAdss * 60;
+                  const ttimes = Math.floor(Math.random() * (maxscs - miscs + 1)) + 60;
+                  const cossfe = ttimes / 60;
+                  const numb = cossfe.toString().slice(0,4)
+                  const rNumb = parseFloat(numb);
+                  logToTextarea("Scrolling page tautan for random range " + rNumb + " minute 🕐");
+                      while (Date.now() - starttTimes < ttimes * 1000) {
+                          await page.evaluate(() => {
+                              window.scrollBy(0, 100);
+                      });
+                      await page.sleep(3000);
+                      await page.evaluate(() => {
+                          window.scrollBy(0, -10);
+                      });
+                      await page.sleep(3000);
+                }
+              }
+            } else {
+                logToTextarea('Tautan tidak ditemukan.');
+            } 
         }
+       
+        if (tiktoks) {
+          logToTextarea('tiktoks')
+        }
+        if (youtubes) {
+          logToTextarea('youtubes')
+        }
+        if (instagrams) {
+          logToTextarea('instagrams')
+        }
+        if (twitters) {
+          logToTextarea('twitters')
+        }
+        if (twitters) {
+          logToTextarea('twitters')
+        }
+        if (snapcats) {
+          logToTextarea('snapcats')
+        }
+
         logToTextarea('Done');
         await closeClear(proxyC)
     } catch (error) {
@@ -516,6 +864,48 @@ async function autoScrollToTop(page) {
     });
   });
 }
+
+const getipsaya = async (logToTextarea, proxyC) => {
+  try {
+      await page.goto(ipSaya, {
+          waitUntil: "networkidle2",
+          timeout: 60000
+      });
+      await page.waitForSelector("body");
+
+      const accept = await page.$(".fc-button");
+      accept && (await accept.click());
+
+      await page.waitForSelector('input[id="btn-submit"]', {
+          timeout: 60000,
+      });
+
+      const data = await page.$('input[id="btn-submit"]');
+      data && (await data.click());
+      await page.waitForTimeout(3000);
+
+      const datas = await page.$('[name="btn-submit"]');
+      datas && (await datas.click());
+      await page.waitForTimeout(10000);
+      const getPrx = await page.$('#submit-control')
+      const resultPrx = await page.evaluate((e) => e.innerText, getPrx);
+      const splitPrx = resultPrx.split('-')[0]
+      const note = resultPrx.split(',')[0]
+      const stringPrx = splitPrx.toString();
+      await page.sleep(timeout)
+      if (stringPrx == "IYA ") {
+          logToTextarea(note + ' Closing browser and retrying... ❗');
+          await closeClear(proxyC)
+      }else{
+          logToTextarea(note)
+      }
+      
+      
+  } catch (error) {
+      logToTextarea(error)
+      await closeClear(proxyC)
+  }
+};
 
 const getIp = async (logToTextarea, proxyC) => {
     try {
@@ -633,7 +1023,7 @@ async function getLinks(page) {
     const randomLink = links[randomIndex];
     await page.goto(randomLink);
   }
-const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss) => {
+const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys) => {
     try {
         const data = fs.readFileSync(keywordFilePath, 'utf-8')
         const lines = data.split('\n');
@@ -644,10 +1034,10 @@ const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkA
 
             for (let y = 0; y < lines.length; y++) {
                 const line = lines[y];
-                const [keyword, domain, ] = line.trim().split(';');
+                const [keyword, domain, anchor ] = line.trim().split(';');
 
                 logToTextarea("Thread #" + (y + 1));
-                await startProccess(keyword, domain, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss);
+                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys);
                 if (stopFlag) {
                     logToTextarea("Stop the proccess success")
                     break

@@ -21,8 +21,8 @@ function createWindow() {
     height: 660,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
-      color: '#fffff',
-      symbolColor: '#3b71ca'
+      color: '#000000',
+      symbolColor: '#DAA520'
     },
     // resizable: false,
     icon: path.join(__dirname, './assets/icon.ico'),
@@ -65,7 +65,7 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss) => {
+ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys) => {
   const logs = [];
 
   const logToTextarea = (message) => {
@@ -77,7 +77,7 @@ ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners,
   try {
     logToTextarea('Process started...');
     event.sender.send('run')
-    await main(logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss);
+    await main(logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys);
     logToTextarea('Process completed successfully.');
     event.sender.send('foor')
   } catch (error) {

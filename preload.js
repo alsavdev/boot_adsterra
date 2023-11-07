@@ -28,6 +28,17 @@ const message = document.getElementById('message');
 const restartButton = document.getElementById('restart-button');
 const loaderDownload = document.getElementById('warp-loader')
 
+const googlebanner = document.getElementById('google_banner')
+const tiktok = document.getElementById('tiktok')
+const youtube = document.getElementById('youtube')
+const instagram = document.getElementById('instagram')
+const twitter = document.getElementById('twitter')
+const snapcat = document.getElementById('snapcat')
+const ipsaya = document.getElementById('ipsaya')
+const captchaApiKey = document.getElementById('captchaApiKey')
+
+
+
 document.addEventListener('change', () => {
   if (proxyCheckBox.checked) {
     proxy.disabled=false
@@ -64,7 +75,16 @@ startButton.addEventListener('click', () => {
   const scrollminAdss = scrollminAds.value
   const scrollmaxAdss = scrollmaxAds.value
   
-  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss);
+  const googlebanners = googlebanner.checked
+  const tiktoks = tiktok.checked
+  const youtubes = youtube.checked
+  const instagrams = instagram.checked
+  const twitters = twitter.checked
+  const snapcats = snapcat.checked
+  const ipsayas = ipsaya.checked
+  const captchaApiKeys = captchaApiKey.value
+  
+  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys);
 });
 stopButton.addEventListener('click', () => {
   if (confirm("Realy want to stop the proccess ?") == true) {
@@ -98,6 +118,13 @@ scrollmin,
 scrollmax,
 scrollminAds,
 scrollmaxAds,
+googlebanner,
+tiktok,
+youtube,
+instagram,
+twitter,
+snapcat,
+ipsaya,
 ]
 
 ipcRenderer.on('run',()=>{
