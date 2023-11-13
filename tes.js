@@ -14,7 +14,7 @@ const browser = await puppeteer.launch({ headless: false, defaultViewport:null }
     });
 });
   //   // Buka halaman web yang sesuai
-  await page.goto('https://youtu.be/HG_HRjKXZB0?si=__sSyOmUx0fdclbq');
+  await page.goto('https://youtu.be/qf_2ylYhDlw?si=RNyZp_EnAs3aKcef');
   const acceptSus = await page.evaluate(() => {
     const element = document.querySelector(
         "body > div.consent-bump-v2-lightbox > ytm-consent-bump-v2-renderer > div > div.dialog-scrollable-content > div.one-col-dialog-buttons > ytm-button-renderer.eom-accept > button"

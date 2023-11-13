@@ -707,12 +707,20 @@ if (proxyC) {
             if (elements.length > 0) {
                 await elements[0].click()
             }
-            const learn = await page.$$('a')
-            if (learn.length > 3) {
-                await page.evaluate((e) => e.click(), learn[3])
-                await page.waitForSelector("#explanation")
-                await page.click('#explanation > p > a')
+            await page.sleep(10000);
+            try {
+                const learn = await page.$$('a')
+                if (learn.length > 3) {
+                    await page.evaluate((e) => e.click(), learn[3])
+                    await page.waitForSelector("#explanation")
+                    await page.click('#explanation > p > a')
+                }
+            } catch (error) {
+                logToTextarea("Problem With This Link Not Found ❌")
             }
+            const pages = await browser.pages(); 
+            const lastPage = pages[pages.length - 1];
+            await lastPage.close();
             await autoScrolladds(page, scrollminAdss, scrollmaxAdss, logToTextarea)
 
         }
