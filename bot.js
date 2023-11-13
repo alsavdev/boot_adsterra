@@ -764,6 +764,7 @@ if (proxyC) {
             const linkElement = await page.$x(`//a[contains(@href, "${domain}")]`);
             if (linkElement.length > 0) {
               await linkElement[0].click();
+              await linkElement[0].click();
             }
            await autoScrolladds(page, scrollminAdss, scrollmaxAdss, logToTextarea)
         //    logToTextarea('Twitter Done ✅')
