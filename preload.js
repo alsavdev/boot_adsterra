@@ -36,6 +36,8 @@ const twitter = document.getElementById('twitter')
 const snapcat = document.getElementById('snapcat')
 const ipsaya = document.getElementById('ipsaya')
 const captchaApiKey = document.getElementById('captchaApiKey')
+const linkDirect =document.getElementById('link_direct')
+const facebook =document.getElementById('facebook')
 
 
 
@@ -83,8 +85,10 @@ startButton.addEventListener('click', () => {
   const snapcats = snapcat.checked
   const ipsayas = ipsaya.checked
   const captchaApiKeys = captchaApiKey.value
+  const linkDirects = linkDirect.checked
+  const facebooks = facebook.checked
   
-  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys);
+  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks);
 });
 stopButton.addEventListener('click', () => {
   if (confirm("Realy want to stop the proccess ?") == true) {
@@ -125,6 +129,8 @@ instagram,
 twitter,
 snapcat,
 ipsaya,
+linkDirect,
+facebook,
 ]
 
 ipcRenderer.on('run',()=>{

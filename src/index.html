@@ -44,7 +44,7 @@
     <div class="md:flex md:flex-row px-3 py-2 gap-4">
         <div class="md:basis-1/5 border-2 p-2 rounded-xl merge-borders">
             <div class="col-span-3">
-                <label class="block mb-3 text-sm font-bold text-white" for="mode_viw">Mode View :</label>
+                <label class="block mb-4 text-sm font-bold text-white" for="mode_viw">Mode View :</label>
                 <div class="col-span-3">
                     <div class="flex justify-between mb-2">
                         <div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="col-span-3">
-                <label class="block mb-3 text-sm font-bold text-white" for="mode-visit">Mode Visit Banner :</label>
+                <label class="block mb-4 text-sm font-bold text-white" for="mode-visit">Mode Visit Banner :</label>
                 <div class="col-span-3">
                     <div class="flex justify-between mb-2">
                         <div>
@@ -99,7 +99,22 @@
         <div class="md:basis-1/5 border-2 p-2 rounded-xl">
 
 
-            <label class="block mb-3 text-sm font-bold text-white" for="visit-direct">Mode Visit Direct Link :</label>
+            <label class="block mb-4 text-sm font-bold text-white" for="visit-direct">Mode Visit Direct Link :</label>
+            <div class="col-span-3">
+                <div class="flex justify-between mb-2">
+                    <div>
+                        <label for="link_direct" class="block text-xs font-medium text-white"> URL Link Direct</label>
+                    </div>
+                    <div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="link_direct" class="sr-only peer mode-checkbox">
+                            <div
+                                class="w-[1.75rem] h-4 bg-gray-400 rounded-full peer peer-focus:ring-4 dark:peer-focus:ring-pink-300 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-gold">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class="col-span-3">
                 <div class="flex justify-between mb-2">
                     <div>
@@ -134,21 +149,6 @@
             <div class="col-span-3">
                 <div class="flex justify-between mb-2">
                     <div>
-                        <label for="tiktok" class="block text-xs font-medium text-white">Tiktok</label>
-                    </div>
-                    <div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="tiktok" class="sr-only peer mode-checkbox">
-                            <div
-                                class="w-[1.75rem] h-4 bg-gray-400 rounded-full peer peer-focus:ring-4 dark:peer-focus:ring-pink-300 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-gold">
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-3">
-                <div class="flex justify-between mb-2">
-                    <div>
                         <label for="youtube" class="block text-xs font-medium text-white">Youtube</label>
                     </div>
                     <div>
@@ -164,11 +164,11 @@
             <div class="col-span-3">
                 <div class="flex justify-between mb-2">
                     <div>
-                        <label for="instagram" class="block text-xs font-medium text-white">Instagram</label>
+                        <label for="facebook" class="block text-xs font-medium text-white">Facebook</label>
                     </div>
                     <div>
                         <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="instagram" class="sr-only peer mode-checkbox">
+                            <input type="checkbox" id="facebook" class="sr-only peer mode-checkbox">
                             <div
                                 class="w-[1.75rem] h-4 bg-gray-400 rounded-full peer peer-focus:ring-4 dark:peer-focus:ring-pink-300 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-gold">
                             </div>
@@ -194,6 +194,21 @@
             <div class="col-span-3">
                 <div class="flex justify-between mb-2">
                     <div>
+                        <label for="instagram" class="block text-xs font-medium text-white">Instagram</label>
+                    </div>
+                    <div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="instagram" class="sr-only peer mode-checkbox">
+                            <div
+                                class="w-[1.75rem] h-4 bg-gray-400 rounded-full peer peer-focus:ring-4 dark:peer-focus:ring-pink-300 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-gold">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-3">
+                <div class="flex justify-between mb-2">
+                    <div>
                         <label for="snapcat" class="block text-xs font-medium text-white">Snapcat</label>
                     </div>
                     <div>
@@ -206,16 +221,31 @@
                     </div>
                 </div>
             </div>
+            <div class="col-span-3">
+                <div class="flex justify-between mb-2">
+                    <div>
+                        <label for="tiktok" class="block text-xs font-medium text-white">Tiktok</label>
+                    </div>
+                    <div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="tiktok" class="sr-only peer mode-checkbox">
+                            <div
+                                class="w-[1.75rem] h-4 bg-gray-400 rounded-full peer peer-focus:ring-4 dark:peer-focus:ring-pink-300 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-gold">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="md:basis-1/5 border-2 p-2 rounded-xl mode-view">
             <div class="col-span-3">
-                <label class="block mb-3 text-sm font-bold text-white" for="kwurl">Choose file :</label>
+                <label class="block mb-4 text-sm font-bold text-white" for="kwurl">Choose file :</label>
                 <input accept=".txt" required
                     class="mb-2 block w-full text-sm text-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none"
                     id="keywordFile" type="file">
             </div>
-            <label class="block mb-3 text-sm font-bold text-white" for="proxy">Proxy :</label>
+            <label class="block mb-4 text-sm font-bold text-white" for="proxy">Proxy :</label>
             <div class="col-span-3">
                 <div class="flex justify-between mb-2">
                     <div>
@@ -243,7 +273,7 @@
         </div>
         <div class="md:basis-1/5 border-2 p-2 rounded-xl">
 
-            <label class="block mb-3 text-sm font-bold text-white" for="user_agent">User agent :</label>
+            <label class="block mb-4 text-sm font-bold text-white" for="user_agent">User agent :</label>
             <div class="col-span-3">
                 <div class="flex justify-between mb-2">
                     <div>
@@ -305,10 +335,10 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label class="block mb-3 text-sm font-bold text-white" for="captchaApiKey">2CAPTCHA API KEY :</label>
+                <label class="block mb-4 text-sm font-bold text-white" for="captchaApiKey">2CAPTCHA API KEY :</label>
                 <input
                     class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                    type="text" id="captchaApiKey" placeholder="Enter 2CAPTCHA API Key" />
+                    type="text" id="captchaApiKey" placeholder="Enter 2CAPTCHA API text-black" />
             </div>
         </div>
         <div class="md:basis-1/5 border-2 p-2 rounded-xl">

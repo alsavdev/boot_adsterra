@@ -1,7 +1,7 @@
 {
   "name": "alsav-adsterra",
   "productName": "Alsav Asterra",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Alsav Asterra",
   "main": "Trackerset.js",
   "scripts": {
@@ -12,8 +12,8 @@
     "lint": "echo \"No linting configured\"",
     "build-electron": "npx electron-builder build",
     "start-electron": "npm run build-electron && npm run start",
-    "build" : "npx electron-builder build",
-    "deploy" : "electron-builder -p always",
+    "build": "npx electron-builder build",
+    "deploy": "electron-builder -p always",
     "dev": "npx tailwindcss -i ./src/style.css -o ./assets/outputs.css --watch",
     "post": "npx tailwindcss -i ./src/style.css -o ./src/build.css --minify"
   },
@@ -32,7 +32,8 @@
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-recaptcha": "^3.6.8",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "tw-elements": "^1.0.0-beta3"
+    "tw-elements": "^1.0.0-beta3",
+    "user-agents": "^1.1.18"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.3.0",
@@ -66,14 +67,14 @@
     "nsis": {
       "oneClick": false,
       "perMachine": false,
-      "allowToChangeInstallationDirectory": false,
+      "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     },
     "extraFiles": [
       "extension/spoof",
       "extension/captcha"
     ],
-    "files" : [
+    "files": [
       "!src/outputs.css",
       "!src/style.css"
     ]
