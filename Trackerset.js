@@ -18,7 +18,7 @@ let updateCheckInProgress = false;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
-    height: 660,
+    height: 690,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: '#000000',
@@ -65,7 +65,7 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks) => {
+ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests) => {
   const logs = [];
 
   const logToTextarea = (message) => {
@@ -77,7 +77,7 @@ ipcMain.on('button-click', async (event, keywordFilePath, pageArticles, banners,
   try {
     logToTextarea('Process started...');
     event.sender.send('run')
-    await main(logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks);
+    await main(logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests);
     logToTextarea('Process completed successfully.');
     event.sender.send('foor')
   } catch (error) {
