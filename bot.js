@@ -38,7 +38,7 @@ let page;
 let newProxyUrl;
 let stopFlag = false
 
-const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests) => {
+const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders) => {
 stopFlag = false
 if (captchaApiKeys) {
   p.use(
@@ -377,14 +377,23 @@ if (proxyC) {
              timeout: 120000 });
           } catch (error) {
             if (error.name === "TimeoutError") {                
-            //await page.reload();
             await page.evaluate(() => window.stop());
-            //page.sleep(10000)
             } else {
-              // Handle other errors
               logToTextarea("An error occurred:", error);
             }
           }
+          // pages = await browser.pages()
+          // const checkPage = async () => {
+          //   try {
+          //       if (pages.length > 1) {
+          //           await pages[1].bringToFront()
+          //       }
+          //   } catch (error) {
+          //       console.error(error)
+          //   }
+          // }
+          
+          // setInterval(checkPage, 2000)
         logToTextarea("Go to " + keyword);
         await page.sleep(10000);
         try {
@@ -450,6 +459,53 @@ if (proxyC) {
             await autoScrolladds(lastPage, scrollminAdss, scrollmaxAdss, logToTextarea)
             logToTextarea("Pop Up 2 Found ✅");
           }
+        }
+        if (popunders) {
+          try {
+            await page.goto(keyword, { waitUntil: ['domcontentloaded', "networkidle2"],
+             timeout: 120000 });
+          } catch (error) {
+            if (error.name === "TimeoutError") {                
+            await page.evaluate(() => window.stop());
+            } else {
+              logToTextarea("An error occurred:", error);
+            }
+          }
+        logToTextarea("Go to " + keyword);
+        await page.sleep(10000);
+        try {
+            // await page.reload();
+            await page.sleep(10000);
+          } catch (error) {
+            if (error.name === "TimeoutError") {
+            await page.evaluate(() => window.stop());
+            } else {
+              logToTextarea("An error occurred:", error);
+            }
+          }
+          try {
+            const pages = await browser.pages(); 
+            const urlPage = pages[1];
+            const url = await urlPage.url();
+
+            if (url !== keyword) {
+              await lastPage.goto(keyword);
+              await page.sleep(10000);
+              await page.reload();
+            }
+          } catch (error) {
+            
+          }
+          // await noAdds(logToTextarea);
+          await page.waitForTimeout(9000);
+          logToTextarea('Scrolling page adds for random range');
+          await autoScrollbawa(page);
+          await page.waitForTimeout(9000);
+          await autoScrollToTop(page);
+          await page.waitForTimeout(9000);
+          await autoScrollbawa(page);
+          await page.sleep(10000);
+          await popunderAdds(logToTextarea, scrollminAdss, scrollmaxAdss)
         }
         if (artikels) {
             try {
@@ -711,45 +767,9 @@ if (proxyC) {
                 } else {
                   logToTextarea("An error occurred:", error);
                 }
-                // try {
-                //   await page.reload();
-                //   await page.waitForTimeout(50000);
-                // } catch (error) {
-                //   await page.reload();
-                //   // await page.evaluate(() => window.stop());
-                // }
               }
             logToTextarea("Go to " + keyword);
-            //     try {
-            //       await page.waitForSelector('[aria-label="Close"]');
-            //       await page.click('[aria-label="Close"]');
-            //       logToTextarea('Pop Up Found ✅')
-            //   } catch (error) {
-            //       logToTextarea('Pop Up Not Found ❌')
-            //   }
-           
-            // await page.sleep(3000);
-            // await autoScroll(page, scrollmins, scrollmaxs, logToTextarea)
-            //     try {
-            //       await page.waitForSelector('[aria-label="Close"]');
-            //       await page.click('[aria-label="Close"]');
-            //       logToTextarea('Pop Up Found ✅')
-            //   } catch (error) {
-            //       logToTextarea('Pop Up Not Found ❌')
-            //   }
-            // await page.sleep(3000);
-            // const linkElement = await page.$x(`//a[contains(@href, "${domain}")]`);
-            // if (linkElement.length > 0) {
-            //   await linkElement[0].click();
-            //   try {
-            //     await linkElement[0].click();
-            //   } catch (error) {
-                
-            //   }
-            // }
             await page.waitForTimeout(10000);
-            // const pages = await browser.pages(); 
-            // const lastPage = pages[2];
            await autoScrolladds(page, scrollminAdss, scrollmaxAdss, logToTextarea)
            logToTextarea('Twitter Done ✅')
         }
@@ -1124,23 +1144,60 @@ async function no2Adds(logToTextarea) {
     logToTextarea("Close Up 1 Found ✅");
   }
 }
-async function bannerAdds(logToTextarea, scrollminAdss, scrollmaxAdss) {
+async function popunderAdds(logToTextarea, scrollminAdss, scrollmaxAdss) {
   try {
-    await page.waitForTimeout(7000);
-    const iframes = await page.$$('iframe:not(:first-child):not(:last-child)');
-    const numb = [1,2]
-    const random = Math.floor(Math.random() * numb.length)
-    await iframes[random].click();
-    await iframePertama.click();
+    await page.waitForSelector('iframe');
+    const iframes = await page.$$('iframe');
+    const iframePertama = iframes[iframes.length - 1];
+    const frame = await iframePertama.contentFrame();
+    await frame.waitForSelector(':first-child');
+    const el = await frame.$(':first-child');
+    await frame.waitForSelector("body > div > div > div.pl-d5f79a10041a731c9e69836d9eb5f241__closelink > img",{timeout: 9000 });
+    const acc = await el.$("body > div > div > div.pl-d5f79a10041a731c9e69836d9eb5f241__closelink > img");
+    await acc.click();
+    await page.waitForTimeout(9000);
+    const pages = await browser.pages(); 
+    const selectedPage = pages[1];
+    await selectedPage.click('selector');
+    await page.waitForTimeout(9000);
+    logToTextarea("Close Pop Up 1 Found ✅");
+  } catch (error) {
+    logToTextarea('Close pop up 1 Not Found ❌');
+  }
+  try {
+    await page.waitForSelector('iframe');
+    const iframes = await page.$$('iframe');
+    const iframePertama = iframes[iframes.length - 1];
+    const frame = await iframePertama.contentFrame();
+    await frame.waitForSelector(':first-child');
+    const el = await frame.$(':first-child');
+    await frame.waitForSelector("body > div > div > div > div > img",{timeout: 9000 });
+    const acc = await el.$("body > div > div > div > div > img");
+    await acc.click();
+    await page.waitForTimeout(9000);
+    const pages = await browser.pages(); 
+    const selectedPage = pages[1];
+    await selectedPage.click('selector');
+    await page.waitForTimeout(9000);
+    logToTextarea("Close Pop Up 2 Found ✅");
+  } catch (error) {
+    logToTextarea('Close pop up 2 Not Found ❌');
+  }
+  try {
+    await page.waitForTimeout(9000);
+    const asfd = await page.$("#categories-3 > ul > li.cat-item.cat-item-36 > a");
+    await asfd.click();
+    await page.waitForTimeout(9000); 
     const pages = await browser.pages(); 
     const lastPage = pages[2];
     await autoScrolladds(lastPage, scrollminAdss, scrollmaxAdss, logToTextarea)
+    logToTextarea("Kilik pop under Found✅"); 
   } catch (error) {
-    logToTextarea('Banner Not Found ❌')
+    logToTextarea('Kilik pop under Not Found❌');
   }
 }
 
-const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests) => {
+const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders) => {
     try {
         const data = fs.readFileSync(keywordFilePath, 'utf-8')
         const lines = data.split('\n');
@@ -1154,7 +1211,7 @@ const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkA
                 const [keyword, domain, anchor ] = line.trim().split(';');
 
                 logToTextarea("Thread #" + (y + 1));
-                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests);
+                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders);
                 if (stopFlag) {
                     logToTextarea("Stop the proccess success")
                     break

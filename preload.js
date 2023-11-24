@@ -40,6 +40,7 @@ const linkDirect =document.getElementById('link_direct')
 const facebook =document.getElementById('facebook')
 const popup =document.getElementById('popup')
 const pinterest = document.getElementById('pinterest')
+const popunder = document.getElementById('popunder')
 
 
 
@@ -92,8 +93,9 @@ startButton.addEventListener('click', () => {
   const facebooks = facebook.checked
   const popups = popup.checked
   const pinterests = pinterest.checked
+  const popunders = popunder.checked
   
-  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests);
+  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders);
 });
 stopButton.addEventListener('click', () => {
   if (confirm("Realy want to stop the proccess ?") == true) {
@@ -138,6 +140,7 @@ linkDirect,
 facebook,
 popup,
 pinterest,
+popunder,
 ]
 
 ipcRenderer.on('run',()=>{
