@@ -38,7 +38,7 @@ let page;
 let newProxyUrl;
 let stopFlag = false
 
-const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders) => {
+const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, threadCount) => {
 stopFlag = false
 if (captchaApiKeys) {
   p.use(
@@ -54,12 +54,21 @@ if (captchaApiKeys) {
 let reachedproxy;
 let rproxy;    
 if (proxyC) {
+  if (sequences) {
+    const se = proxys.split('\n');
+    const firstProxyInfo = se[threadCount - 1]; // Mengambil proxy pertama dari daftar
+    const trims = firstProxyInfo.trim();
+    reachedproxy = [host, port, username, password] = trims.split(":");
+    rproxy = `${reachedproxy[0]}:${reachedproxy[1]}`;
+    logToTextarea('proxy : ' + reachedproxy[0]);
+  }else{
     const se = proxys.split('\n')
     const randomProxyInfo = se[Math.floor(Math.random() * se.length)];
     const trims = randomProxyInfo.trim()
     reachedproxy = [host, port, username, password] = trims.split(":")
- rproxy = `${reachedproxy[0]}:${reachedproxy[1]}`
- logToTextarea('proxy : ' + reachedproxy[0])
+    rproxy = `${reachedproxy[0]}:${reachedproxy[1]}`
+    logToTextarea('proxy : ' + reachedproxy[0])
+  }
 }
     const options = {
         ignoreHTTPSErrors: true,
@@ -1197,21 +1206,21 @@ async function popunderAdds(logToTextarea, scrollminAdss, scrollmaxAdss) {
   }
 }
 
-const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders) => {
+const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences) => {
     try {
         const data = fs.readFileSync(keywordFilePath, 'utf-8')
         const lines = data.split('\n');
-
+        let threadCount = 0;
         for (let x = 0; x < loops; x++) {
             logToTextarea("Loop " + x);
             logToTextarea("\n===========================");
-
+            
             for (let y = 0; y < lines.length; y++) {
+              threadCount++; 
                 const line = lines[y];
                 const [keyword, domain, anchor ] = line.trim().split(';');
-
                 logToTextarea("Thread #" + (y + 1));
-                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders);
+                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, threadCount);
                 if (stopFlag) {
                     logToTextarea("Stop the proccess success")
                     break

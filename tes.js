@@ -1,28 +1,30 @@
 const puppeteer = require('puppeteer');
-const proxyChain = require("proxy-chain");
 
 (async () => {
-  const proxyHost = 'private.residential.proxyrack.net';
-  const proxyPort = 10004;
-  const proxyUsername = 'bismillah2023';
-  const proxyPassword = 'a6ae10-5354aa-b24a1c-4a1aea-bcc31b';
+  // const proxyHost = 'private.residential.proxyrack.net';
+  // const proxyPort = 10004;
+  // const proxyUsername = 'bismillah2023';
+  // const proxyPassword = 'a6ae10-5354aa-b24a1c-4a1aea-bcc31b';
 
-  const proxyUrl = `${proxyUsername}:${proxyPassword}@${proxyHost}:${proxyPort}`;
-  const oldProxyUrl = `http://${proxyUrl}`;
-  const newProxyUrl = await proxyChain.anonymizeProxy({
-      url: oldProxyUrl,
-      port: generateRandomPort()
-  })
+  // rproxy = `${reachedproxy[0]}:${reachedproxy[1]}`
+
+  // const proxyUrl = `${proxyUsername}:${proxyPassword}@${proxyHost}:${proxyPort}`;
+  // const oldProxyUrl = `http://${proxyUrl}`;
+  // const newProxyUrl = await proxyChain.anonymizeProxy({
+  //     url: oldProxyUrl,
+  //     port: generateRandomPort()
+  // })
   const browser = await puppeteer.launch({
     headless: false, 
     defaultViewport:null,
     args: [
-      `--proxy-server=${newProxyUrl}`,
+      `--proxy-server=${'private.residential.proxyrack.net:10004'}`,
       '--ignore-certificate-errors',
       "--force-device-scale-factor=0.5",
     ],
   });
   const page = await browser.newPage();
+  await page.authenticate({ username: 'szefotrv', password: 'dbfag7gmbnoy' });
 
   // Buka website
   const websiteUrl = 'https://zacloudta.my.id/';

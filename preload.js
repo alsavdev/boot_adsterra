@@ -41,7 +41,7 @@ const facebook =document.getElementById('facebook')
 const popup =document.getElementById('popup')
 const pinterest = document.getElementById('pinterest')
 const popunder = document.getElementById('popunder')
-
+const sequence = document.getElementById('sequence')
 
 
 
@@ -94,8 +94,10 @@ startButton.addEventListener('click', () => {
   const popups = popup.checked
   const pinterests = pinterest.checked
   const popunders = popunder.checked
+  const sequences = sequence.checked
+
   
-  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders);
+  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences);
 });
 stopButton.addEventListener('click', () => {
   if (confirm("Realy want to stop the proccess ?") == true) {
@@ -141,6 +143,7 @@ facebook,
 popup,
 pinterest,
 popunder,
+sequence,
 ]
 
 ipcRenderer.on('run',()=>{
