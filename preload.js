@@ -42,6 +42,7 @@ const popup =document.getElementById('popup')
 const pinterest = document.getElementById('pinterest')
 const popunder = document.getElementById('popunder')
 const sequence = document.getElementById('sequence')
+const tablet = document.getElementById('tablet')
 
 
 
@@ -95,9 +96,10 @@ startButton.addEventListener('click', () => {
   const pinterests = pinterest.checked
   const popunders = popunder.checked
   const sequences = sequence.checked
+  const tablets = tablet.checked
 
   
-  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences);
+  ipcRenderer.send('button-click', keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, tablets);
 });
 stopButton.addEventListener('click', () => {
   if (confirm("Realy want to stop the proccess ?") == true) {
@@ -144,6 +146,7 @@ popup,
 pinterest,
 popunder,
 sequence,
+tablet,
 ]
 
 ipcRenderer.on('run',()=>{

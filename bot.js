@@ -32,13 +32,14 @@ const timeout = process.env.TIMEOUT || 3000;
 const ipSaya = process.env.IP_SAYA;
 
 const spoof = path.join(process.cwd(), "extension/spoof/");
+const UserAgent = require('user-agents')  
 
 let browser;
 let page;
 let newProxyUrl;
 let stopFlag = false
 
-const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, threadCount) => {
+const startProccess = async (keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, threadCount, tablets) => {
 stopFlag = false
 if (captchaApiKeys) {
   p.use(
@@ -70,6 +71,26 @@ if (proxyC) {
     logToTextarea('proxy : ' + reachedproxy[0])
   }
 }
+
+let userAgent;
+    if (desktops) {
+         userAgent = new UserAgent({ deviceCategory:  'desktop' });
+        // await page.setUserAgent(userAgent.toString());
+    }else if (androids) {
+      // userAgent = new UserAgent({ deviceCategory: 'mobile' });
+      userAgent = new UserAgent({ deviceCategory: 'mobile' });
+        // await page.setUserAgent(userAgent.toString());
+    }else if (iphones) {
+      userAgent = new UserAgent({ platform: 'iPhone' });
+        // await page.setUserAgent(userAgent.toString());
+    }else if (randoms) {
+      userAgent = new UserAgent().random();
+        // await page.setUserAgent(userAgent.toString());
+    }else if (tablets){
+      userAgent = new UserAgent({ deviceCategory: 'tablet' });
+    }else{
+      userAgent = new UserAgent().random();
+    }
     const options = {
         ignoreHTTPSErrors: true,
         defaultViewport: null,
@@ -77,6 +98,7 @@ if (proxyC) {
             proxyC ? `--proxy-server=${rproxy}` : null,
             `--load-extension=${spoof}`,
             // `--disable-extensions-except=${spoof}`,
+            `--user-agent=${userAgent.toString()}`,
             "--disable-dev-shm-usage",
             "--no-sandbox",
             "--disable-popup-blocking",
@@ -95,25 +117,6 @@ if (proxyC) {
     if (proxyC) {
         await page.authenticate({username: `${reachedproxy[2]}`,password: `${reachedproxy[3]}`}); 
     }
-   
-    const UserAgent = require('user-agents')  
-    if (desktops) {
-        const userAgent = new UserAgent({
-            deviceCategory:  'desktop'
-        });
-        await page.setUserAgent(userAgent.toString());
-    }else if (androids) {
-        const randomAgent = randomListAndroid();
-        await page.setUserAgent(randomAgent);
-    }else if (iphones) {
-        const userAgent = new UserAgent({ platform: 'iPhone' });
-        await page.setUserAgent(userAgent.toString());
-    }else if (randoms) {
-        const userAgent = new UserAgent().random();
-        await page.setUserAgent(userAgent.toString());
-    }
-   
-
     page.sleep = function (timeout) {
         return new Promise(function (resolve) {
             setTimeout(resolve, timeout);
@@ -1206,7 +1209,7 @@ async function popunderAdds(logToTextarea, scrollminAdss, scrollmaxAdss) {
   }
 }
 
-const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences) => {
+const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences , tablets) => {
     try {
         const data = fs.readFileSync(keywordFilePath, 'utf-8')
         const lines = data.split('\n');
@@ -1220,7 +1223,7 @@ const main = async (logToTextarea, keywordFilePath, pageArticles, banners, linkA
                 const line = lines[y];
                 const [keyword, domain, anchor ] = line.trim().split(';');
                 logToTextarea("Thread #" + (y + 1));
-                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, threadCount);
+                await startProccess(keyword, domain, anchor, logToTextarea, pageArticles, banners, linkAccounts, artikels, proxyC, proxys, desktops, androids, iphones, randoms, whoers, view, recentPosts, loops, scrollmins, scrollmaxs, scrollminAdss, scrollmaxAdss, googlebanners, tiktoks, youtubes, instagrams, twitters, snapcats, ipsayas, captchaApiKeys, linkDirects, facebooks, popups, pinterests, popunders, sequences, threadCount , tablets);
                 if (stopFlag) {
                     logToTextarea("Stop the proccess success")
                     break
