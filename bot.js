@@ -934,6 +934,14 @@ const getipsaya = async (logToTextarea, proxyC) => {
           waitUntil: "networkidle2",
           timeout: 60000
       });
+      try {
+        await page.waitForTimeout(10000);
+        await page.waitForSelector("body > div.fc-consent-root > div.fc-dialog-container > div.fc-dialog.fc-choice-dialog > div.fc-choice-dialog-header > button", {timeout: 10000,});
+        await page.click("body > div.fc-consent-root > div.fc-dialog-container > div.fc-dialog.fc-choice-dialog > div.fc-choice-dialog-header > button");
+        logToTextarea('Pop up Found ✅');
+      } catch (error) {
+        logToTextarea('No pop up');
+      }
       await page.waitForSelector("body");
 
       const accept = await page.$(".fc-button");
@@ -945,10 +953,10 @@ const getipsaya = async (logToTextarea, proxyC) => {
 
       const data = await page.$('input[id="btn-submit"]');
       data && (await data.click());
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(40000);
 
-      const datas = await page.$('[name="btn-submit"]');
-      datas && (await datas.click());
+      const datas = await page.$$('[name="btn-submit"]');
+      datas.length > 0 && (await datas[0].click());
       await page.waitForTimeout(10000);
       const getPrx = await page.$('#submit-control')
       const resultPrx = await page.evaluate((e) => e.innerText, getPrx);
